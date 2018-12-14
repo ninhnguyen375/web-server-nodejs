@@ -1,0 +1,21 @@
+include button
+
+mixin file(params)
+  - params = params || {}
+  - var input = params.input || {}
+  - var html = params.html
+  - var text = params.text
+  - delete params.input
+  - delete params.html
+  - delete params.text
+
+  +button(params)(class="btn-file")&attributes(attributes)
+    span
+      != html
+      block
+      = text
+    input(
+      type="file"
+      name=input.name
+      disabled=!!params.disabled
+    )&attributes(input.attributes)

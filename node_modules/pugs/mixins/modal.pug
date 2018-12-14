@@ -1,0 +1,36 @@
+include button
+include dismiss
+include form
+
+mixin modal(params)
+	- params = params || {}
+	- params.prefix = params.prefix || (modal && modal.prefix) || 'modal'
+	- params.content = params.content || {}
+
+	mixin render_content()
+		if params.content.action || params.content.method
+			+form({cls: [`${params.prefix}-content`]})&attributes(params.content)
+				block
+		else
+			div(class=[`${params.prefix}-content`])&attributes(params.content)
+				block
+
+	div(class=[params.prefix, {fade: params.fade !== false}, params.cls])&attributes(params.attributes, attributes)
+		div(class=[`${params.prefix}-dialog`, {[`${params.prefix}-${params.size}`]: params.size}])
+			+render_content
+				if params.title
+					div(class=[`${params.prefix}-header`])
+						if params.dismiss !== false
+							+dismiss({name: params.prefix})
+						if params.title
+							h4= params.title
+				div(class=[`${params.prefix}-body`])
+					if !params.title && params.dismiss !== false
+						+dismiss({name: params.prefix})
+					!= params.html
+					block
+					= params.text
+				if params.buttons
+					div(class=[`${params.prefix}-footer`])
+						each button in params.buttons
+							+button(button)

@@ -1,0 +1,10 @@
+include tree
+
+mixin menu(params)
+  - params = params || {}
+  - params.cls = params.cls || 'menu'
+
+  if params.items && params.items.length
+    div(class=params.cls)&attributes(params.attributes, attributes)
+      .menu-scroller
+        +tree(params)

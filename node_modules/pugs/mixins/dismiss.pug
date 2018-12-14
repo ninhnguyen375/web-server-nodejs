@@ -1,0 +1,20 @@
+include button
+
+mixin dismiss(params)
+  - params = params || {}
+  - params.cls = params.cls || 'close'
+  - params.aria_label = params.aria_label || 'Close'
+
+  if params.name
+    button(
+      type="button"
+      class=params.cls
+      data-dismiss=params.name
+      aria-label=params.aria_label
+    )&attributes(params.attributes, attributes)
+      if params.html || block || params.text
+        != params.html
+        block
+        = params.text
+      else
+        span(aria-hidden="true") &times;

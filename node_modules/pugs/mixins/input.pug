@@ -1,0 +1,50 @@
+include button
+include dropdown
+include icon
+
+mixin input(params)
+  - params = params || {}
+  - params.prefix = params.prefix || (input && input.prefix) || 'input'
+  - params.type = params.type || 'text'
+
+  mixin render_input()
+    input(
+      type=params.type
+      id=params.id
+      class=[params.cls, {[`${params.prefix}-${params.size}`]: params.size}]
+      name=params.name
+      value=params.value
+      placeholder=params.placeholder
+      checked=!!params.checked
+      readonly=!!params.readonly
+      disabled=!!params.disabled
+      required=!!params.required
+      autofocus=!!params.autofocus
+      autocomplete=params.autocomplete
+    )&attributes(params.attributes, attributes)
+
+  mixin render_extra(element)
+    - var isBtn = Object.prototype.toString.call(element) == '[object Array]'
+    - var type = isBtn ? 'btn' : 'addon'
+    div(class=[`${params.prefix}-group-${type}`])
+      if isBtn
+        each _element in element
+          if _element.type == 'dropdown'
+            +dropdown(_element)
+          else
+            +button(_element)
+      else
+        if typeof element == 'string'
+          != element
+        else
+          +icon(element)
+
+  if params.left || params.right
+    div(class=[`${params.prefix}-group`])
+      if params.left
+        +render_extra(params.left)
+      +render_input()&attributes(attributes)
+      if params.right
+        +render_extra(params.right)
+  else
+    +render_input()&attributes(attributes)

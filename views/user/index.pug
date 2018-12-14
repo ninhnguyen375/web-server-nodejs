@@ -1,0 +1,25 @@
+extends ../layouts/common
+
+block content
+      h1 List Users
+      .d-flex.align-items-center
+            a(href="/user/create").btn.btn-success NEW
+            form(method="get",action="/user/search" class="col-3 d-flex ml-auto input-group")
+                  input(type="search",name="name", value=name, class="form-control")
+                  div(class="input-group-append")
+                        button(type="submit",class="btn btn-secondary btn-outline-secondary") Search
+
+      table.table
+            thead
+            tr
+                  th(scope='col') Name
+                  th(scope='col').text-center Age
+                  th(scope='col') Action
+            tbody
+            each user in users
+                  tr
+                        td= user.name
+                        td.text-center= user.age
+                        td
+                              a(href="/user/"+user.id).text-center
+                                    button.btn View

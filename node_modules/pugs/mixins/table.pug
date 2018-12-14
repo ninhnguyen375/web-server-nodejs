@@ -1,0 +1,55 @@
+mixin table(params)
+  - params = params || {}
+  - params.prefix = params.prefix || (table && table.prefix) || 'table'
+  - params.bordered = params.bordered === undefined && (checkbox && checkbox.bordered) || params.bordered
+  - params.condensed = params.condensed === undefined && (checkbox && checkbox.condensed) || params.condensed
+  - params.hover = params.hover === undefined && (checkbox && checkbox.hover) || params.hover
+  - params.responsive = params.responsive === undefined && (checkbox && checkbox.responsive) || params.responsive
+  - params.striped = params.striped === undefined && (checkbox && checkbox.striped) || params.striped
+
+  if Object.prototype.toString.call(params.columns) === '[object Array]' && params.columns.length && Object.prototype.toString.call(params.items) === '[object Array]' && (params.items.length || params.empty)
+    div(class=[
+      params.cls,
+      {
+        [`${params.prefix}-responsive`]: params.responsive,
+      },
+    ])
+      table(class=[
+        params.prefix,
+        {
+          [`${params.prefix}-bordered`]: params.bordered,
+          [`${params.prefix}-condensed`]: params.condensed,
+          [`${params.prefix}-hover`]: params.hover,
+          [`${params.prefix}-striped`]: params.striped,
+        }
+      ])&attributes(params.attributes, attributes)
+        if params.title
+          caption= params.title
+        thead
+          tr
+            for column, i in params.columns
+              th(width=column.width)&attributes(column.attributes)
+                if typeof column.name == 'function'
+                  != column.name(column, i, params.column)
+                else
+                  = column.name
+        tbody
+          if params.items.length
+            for item, i in params.items
+              tr&attributes(typeof item.attributes == 'function' ? item.attributes(item, i, params.items) : item.attributes)
+                for column in params.columns
+                  td&attributes(typeof column.item == 'function' ? column.item(item, i, params.items) : column.item)
+                    if typeof column.key == 'function'
+                      != column.key(item, i, params.items)
+                    else
+                      = item[column.key]
+          else if params.empty
+            - params.empty = typeof params.empty == 'string' ? {text: params.empty} : params.empty
+            tr(class=[params.empty.cls])&attributes(params.empty.attributes)
+              td(colspan=params.columns.length)
+                != params.empty.html
+                = params.empty.text
+        if params.html || block
+          tfoot
+            != params.html
+            block

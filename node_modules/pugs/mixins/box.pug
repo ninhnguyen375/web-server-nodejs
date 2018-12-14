@@ -1,0 +1,14 @@
+include button
+include icon
+
+mixin box(params)
+  - params = params || {}
+  - params.prefix = params.prefix || (box && box.prefix) || 'box'
+
+  div(class=[params.prefix, params.cls])&attributes(params.attributes, attributes)
+    if params.title
+      div(class=[`${params.prefix}-hd`])
+        h3!= params.title
+    != params.html
+    block
+    = params.text

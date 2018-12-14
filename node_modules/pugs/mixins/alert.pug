@@ -1,0 +1,25 @@
+include dismiss
+include icon
+
+mixin alert(params)
+  - params = params || {}
+  - params.prefix = params.prefix || (alert && alert.prefix) || 'alert'
+
+  div(
+    class=[
+      params.prefix,
+      {
+        [`${params.prefix}-${params.style}`]: params.style,
+        [`${params.prefix}-dismissible`]: params.dismiss !== false,
+        fade: params.fade,
+      },
+    ]
+    role=params.prefix
+  )&attributes(params.attributes, attributes)
+    if params.dismiss !== false
+      +dismiss({name: params.prefix})
+    if params.icon
+      +icon(params.icon)
+    != params.html
+    block
+    = params.text

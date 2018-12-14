@@ -1,0 +1,30 @@
+include icon
+
+mixin button(params)
+  - params = params || {}
+  - params.prefix = params.prefix || (button && button.prefix) || 'btn'
+  - params.type = params.href ? null : (params.type || 'button')
+
+  #{params.href ? 'a' : 'button'}(
+    href=params.href
+    type=params.type
+    name=!params.href && params.name
+    class=[
+      params.prefix,
+      {
+        [`${params.prefix}-${params.style}`]: params.style,
+        [`${params.prefix}-${params.size}`]: params.size,
+        [`${params.prefix}-block`]: params.block,
+        active: params.active,
+        disabled: params.disabled && params.href && 'disabled',
+      },
+      params.cls,
+    ]
+    disabled=params.disabled && !params.href
+    autofocus=params.autofocus
+  )&attributes(params.attributes, attributes)
+    if params.icon
+      +icon(params.icon)
+    != params.html
+    block
+    = params.text

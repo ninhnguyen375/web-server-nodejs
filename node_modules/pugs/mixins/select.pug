@@ -1,0 +1,36 @@
+include dropdown
+include input
+
+mixin select(params)
+  - params = params || {}
+  - params.prefix = params.prefix || (input && input.prefix) || 'input'
+  - params.items = params.items || []
+
+  if params.fake
+    +dropdown({
+      cls: ['select', params.cls, {multiple: params.multiple}],
+      up: params.up,
+      align: params.align,
+      size: params.size,
+      button: {id: params.id},
+      items: params.items,
+      value: params.value,
+    })
+      +input({
+        type: 'hidden',
+        name: params.name,
+        value: params.value,
+      })
+      strong
+  else
+    select(
+      id=params.id
+      class=[params.cls, {[`${params.prefix}-${params.size}`]: params.size}]
+      name=params.name
+      multiple=!!params.multiple
+    )&attributes(params.attributes, attributes)
+      each item in params.items
+        option(
+          value=item.value
+          selected=item.value == params.value
+        )= item.name

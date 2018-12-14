@@ -1,0 +1,67 @@
+include checkbox
+include icon
+include input
+include select
+//- include textarea
+
+mixin form_group(params)
+  - params = params || {}
+  - params.prefix = params.prefix || (form && form.prefix) || 'form'
+
+  mixin render_control_wrapper
+    if params.control.wrapper
+      - params.control.wrapper = (typeof params.control.wrapper == 'string' || Object.prototype.toString.call(params.control.wrapper) == '[object Array]') && {cls: params.control.wrapper} || params.control.wrapper
+      div(class=params.control.wrapper.cls)&attributes(params.control.wrapper.attributes)
+        - delete params.control.wrapper
+        block
+    else
+      block
+
+  if params.control
+    div(
+      class=[
+        `${params.prefix}-group`,
+        {
+          [`${params.prefix}-group-${params.size}`]: params.size,
+          [`has-${params.status}`]: params.status,
+          'has-feedback': params.feedback,
+        },
+        params.cls,
+      ]
+    )&attributes(params.attributes, attributes)
+      if params.label
+        - params.label = typeof params.label == 'string' && {html: params.label} || params.label
+        - params.label.cls = ['control-label'].concat(params.label.cls)
+        label(
+          for=params.control.id
+          class=[params.label.cls, {'sr-only': params.label.srOnly}]
+        )&attributes(params.label.attributes)
+          != params.label.html
+          = params.label.text
+      +render_control_wrapper
+        if params.control.type == 'static'
+          div(class=[
+            `${params.prefix}-control-static`,
+            params.control.id,
+            params.control.name != params.control.id && params.control.name,
+            params.control.cls,
+          ])&attributes(params.control.attributes)= params.control.value
+        else if params.control.type == 'checkbox' || params.control.type == 'radio'
+          - params.control.radio = params.control.type == 'radio'
+          +checkbox(params.control)
+        else
+          - params.control.cls = [`${params.prefix}-control`].concat(params.control.cls)
+          if params.control.type == 'select'
+            +select(params.control)
+          //- else if params.control.type == 'textarea'
+          //- 	+textarea(params.control)
+          else
+            +input(params.control)
+        if params.feedback
+          +icon(params.feedback)(class=`${params.prefix}-control-feedback`)
+      block
+      if params.help
+        - params.help = typeof params.help == 'string' && {text: params.help} || params.help
+        div(class=['help-block', params.help.cls])&attributes(params.help.attributes)
+          != params.help.html
+          = params.help.text

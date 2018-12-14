@@ -1,0 +1,31 @@
+include input
+
+mixin checkbox(params)
+  - params = params || {}
+  - params.fake = params.fake === undefined && (checkbox && checkbox.fake) || params.fake
+  - params.icon = params.icon === undefined && (checkbox && checkbox.icon) || params.icon
+  - params.type = params.radio && 'radio' || 'checkbox'
+
+  if params.label || params.fake
+    - var cls = params.cls
+    - delete params.cls
+    label(
+      class=[
+        params.type,
+        cls,
+        {
+          [`${params.type}-fake`]: params.fake,
+          readonly: params.readonly,
+          disabled: params.disabled,
+        }
+      ]
+      for=params.id
+    )
+      +input(params)&attributes(params.attributes, attributes)
+      if params.fake && params.icon
+        i
+      != params.html
+      block
+      = params.text
+  else
+    +input(params)&attributes(params.attributes, attributes)

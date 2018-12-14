@@ -1,0 +1,17 @@
+mixin breadcrumb(params)
+  - params = params || {}
+  - params.cls = params.cls || 'breadcrumb'
+  - params.active_cls = params.active_cls || (breadcrumb && breadcrumb.active_cls) || ''
+
+  if params.items && params.items.length
+    ol(class=params.cls)&attributes(params.attributes, attributes)
+      for item, i in params.items
+        li(class=[item.cls, i == params.items.length - 1 && params.active_cls || null])
+          if typeof params.item === 'string'
+            != params.item.replace('${name}', item.name).replace('${url}', item.url || '').replace('${active}', item.active && params.active_cls || '')
+          else if typeof params.item === 'function'
+            != params.item(item, i)
+          else if item.url
+            a(href=item.url)= item.name
+          else
+            = item.name

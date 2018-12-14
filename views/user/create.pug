@@ -1,0 +1,11 @@
+extends ../layouts/common.pug
+block content
+      h1 Create user
+      a(href="/user")
+            button(class="btn btn-primary ml-3") BACK
+      form(action="/user/create", method="POST" class="col-3 mt-2" novalidate).needs-validation
+            input#username.form-control(type='text', placeholder='Name', required='',name="name")
+            .invalid-feedback Please provide a valid Name.
+            input#userage.mt-2.form-control(name="age",type='number', placeholder='Age', required='',min='1',max='100')
+            .invalid-feedback Please provide a valid Age.
+            button(class="btn btn-success mt-2") Create
