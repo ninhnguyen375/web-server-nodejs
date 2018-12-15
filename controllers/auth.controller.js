@@ -1,14 +1,16 @@
-const db = require('../db');
+const User = require('../models/user.model');
+
 
 
 module.exports.login = (req, res) => {
    res.render('auth/login');
 }
-module.exports.postLogin = (req, res) => {
+module.exports.postLogin = async (req, res) => {
    const email = req.body.email;
    const password = req.body.password;
-   let user = db.get('users').find({ email: email}).value();
-   if(!user){
+   const user = await User.find({email: email});
+   const checkemail = user.find(userArr => userArr.email === email);
+   if(!checkemail){
       res.render('auth/login',{
          errors: [
             'User does not exist.'
@@ -17,7 +19,8 @@ module.exports.postLogin = (req, res) => {
       });
       return;
    }
-   if (user.password !== password) {
+   const checkpass = user.find(userArr => userArr.password === password);
+   if (!checkpass) {
       res.render('auth/login',{
          errors: [
             'Wrong password.'
@@ -26,5 +29,5 @@ module.exports.postLogin = (req, res) => {
       });
       return;
    }
-   res.redirect('/user');
+   res.redirect('/user/' + checkpass.id);
 };

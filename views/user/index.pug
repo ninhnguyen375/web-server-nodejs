@@ -5,7 +5,11 @@ block content
       .d-flex.align-items-center
             a(href="/user/create").btn.btn-success NEW
             form(method="get",action="/user/search" class="col-3 d-flex ml-auto input-group")
-                  input(type="search",name="name", value=name, class="form-control")
+                  input(type="search",
+                        name="name", 
+                        value=name, 
+                        class="form-control",
+                        placeholder="Search có dấu")
                   div(class="input-group-append")
                         button(type="submit",class="btn btn-secondary btn-outline-secondary") Search
 

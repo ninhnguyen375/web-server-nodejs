@@ -37,6 +37,8 @@ app.use(express.static('public'));
 app.use('/user', userRoute);
 app.use('/auth', authRoute);
 app.use('/product', productRoute);
+
+// API
 app.use('/api/product', apiProductRoute);
 
 //Page home
