@@ -1,11 +1,59 @@
 extends ../layouts/common.pug
 block content
-      h1 Create user
-      a(href="/user")
-            button(class="btn btn-primary ml-3") BACK
-      form(action="/user/create", method="POST" class="col-3 mt-2" novalidate).needs-validation
-            input#username.form-control(type='text', placeholder='Name', required='',name="name")
+      #alertDanger.mb-5.col-5.ml-auto
+      .d-flex.m-auto.col-5
+            h1.col-8.mb-3 Create user
+            .col-2
+            a(href="/user").mt-2
+                  button(class="btn btn-light") BACK
+      form(
+            action="/user/create", 
+            method="POST",
+            class="col-3 mt-2",
+            onsubmit="return checkpass()",
+            novalidate).needs-validation.col-5.m-auto
+            //- Name
+            label(for="username") Name
+            input#username.form-control(
+                  type='text', 
+                  placeholder='Name', 
+                  required='',
+                  name="name")
             .invalid-feedback Please provide a valid Name.
-            input#userage.mt-2.form-control(name="age",type='number', placeholder='Age', required='',min='1',max='100')
-            .invalid-feedback Please provide a valid Age.
-            button(class="btn btn-success mt-2") Create
+            //- Phone
+            label(for="userphone") Phone
+            input#userphone.form-control(
+                  type='text', 
+                  placeholder='Phone',
+                  pattern="[0-9]{10,}", 
+                  required='',name="phone")
+            .invalid-feedback Please provide a valid Phone.
+            //- Email
+            label(for="useremail") Email
+            input#useremail.form-control(
+                  name="email",
+                  type='email', 
+                  placeholder='Email', 
+                  required='',
+                  min='1',
+                  max='100')
+            .invalid-feedback Please provide a valid Email.
+            //- Password
+            label(for="userpassword") Password
+            input#userpassword.form-control(
+                  name="password",
+                  type='password', 
+                  placeholder='Password', 
+                  required='',
+                  pattern='.{6,}')
+            .invalid-feedback Please provide a valid Password.
+            //- Password again
+            label(for="userpassword2") Confirm password
+            input#userpassword2.form-control(
+                  type='password', 
+                  placeholder='Confirm Password', 
+                  required='',
+                  pattern='.{6,}')
+            .invalid-feedback Please provide a valid Confirm Password.
+            //- Create
+            button(class="btn btn-success mt-3") Create

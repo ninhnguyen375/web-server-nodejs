@@ -9,17 +9,18 @@ block content
                   div(class="input-group-append")
                         button(type="submit",class="btn btn-secondary btn-outline-secondary") Search
 
-      table.table
+      table.table.table-bordered
             thead
             tr
                   th(scope='col') Name
-                  th(scope='col').text-center Age
-                  th(scope='col') Action
+                  th(scope='col') Phone
+                  th(scope='col') Email
+                  th(scope='col').text-center Action
             tbody
             each user in users
                   tr
                         td= user.name
-                        td.text-center= user.age
-                        td
-                              a(href="/user/"+user.id).text-center
-                                    button.btn View
+                        td= user.phone
+                        td= user.email
+                        td.text-center
+                              a(href="/user/"+user.id).btn.btn-light View

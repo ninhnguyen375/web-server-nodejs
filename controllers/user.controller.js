@@ -1,5 +1,6 @@
-const db = require('../db');
+const User = require('../models/user.model');
 const shortid = require('shortid');
+
 
 module.exports.search = (req, res) => {
    var name = req.query.name;
@@ -12,15 +13,18 @@ module.exports.search = (req, res) => {
    });
 };
 
-module.exports.index = (req, res) => {
+module.exports.index = async (req, res) => {
+   const users = await User.find();
+
    res.render('user/index', {
-      users: db.get('users').value()
+      users: users
    });
 }
 
-module.exports.postCreate = (req, res) => {
-   req.body.id = shortid.generate();
-   db.get('users').push(req.body).write();
+module.exports.postCreate = async (req, res) => {
+   
+   await User.insertMany([req.body]);
+   // db.get('users').push(req.body).write();
    res.redirect('/user');
 };
 

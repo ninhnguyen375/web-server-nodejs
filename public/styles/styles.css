@@ -1,3 +1,21 @@
 * {
    box-shadow: none !important;
 }
+body{
+   min-height:calc(100vh - 50px);
+   position: relative;
+}
+#footer{
+   position: absolute;
+   bottom: 0;
+   left: 0;
+   right: 0;
+}
+.product__cart:hover .product__btn {
+   display: block;
+}
+.product__btn{
+   display: none;
+   bottom: 5px;
+   right: 5px;
+}
